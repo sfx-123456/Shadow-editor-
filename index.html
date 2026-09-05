@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+</head>
+
+<body>
+  
+</body>
+
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shadow Edits — Video Editing on Order</title>
+<meta name="description" content="Freelance video editing for reels, YouTube, podcasts and brand promos. Send the footage, get the cut.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- Google Analytics (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Y9FPEZG2EZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-Y9FPEZG2EZ');
+</script>
+<style>
+  :root{
+    --ink:#07080B;
+    --ink-2:#0D0F15;
+    --glass:rgba(255,255,255,0.045);
+    --glass-brd:rgba(255,255,255,0.09);
+    --text:#F3F4F8;
+    --muted:rgba(243,244,248,0.6);
+    --blue:#3C5BFF;
+    --blue-glow:#7C93FF;
+    --tally:#FF4B36;
+    --line:rgba(255,255,255,0.1);
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  ::selection{background:var(--blue);color:#fff;}
+
+  body{
+    font-family:'Space Grotesk', sans-serif;
+    background:var(--ink);
+    color:var(--text);
+    line-height:1.55;
+    overflow-x:hidden;
+    position:relative;
+  }
+
+  /* film grain */
+  body::before{
+    content:'';position:fixed;inset:0;z-index:2;pointer-events:none;
+    opacity:0.035;mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  h1,h2, .display{
+    font-family:'Bebas Neue', sans-serif;
+    letter-spacing:0.01em;
+    line-height:0.94;
+    font-weight:400;
+  }
+
+  a{color:inherit;text-decoration:none;}
+  img{display:block;max-width:100%;}
+  button{font-family:inherit;}
+
+  :focus-visible{outline:2px solid var(--blue-glow);outline-offset:3px;}
+
+  .wrap{max-width:1180px;margin:0 auto;padding:0 32px;}
+
+  /* ---------- Scrubber (scroll progress as a timeline) ---------- */
+  .scrubber{
+    position:fixed;top:0;left:0;right:0;height:3px;z-index:300;
+    background:rgba(255,255,255,0.08);
+  }
+  .scrubber-fill{
+    height:100%;width:0%;
+    background:linear-gradient(90deg, var(--blue), var(--blue-glow));
+    position:relative;
+  }
+  .scrubber-fill::after{
+    content:'';position:absolute;right:-4px;top:50%;translate:0 -50%;
+    width:9px;height:9px;border-radius:50%;
+    background:var(--blue-glow);
+    box-shadow:0 0 10px 2px rgba(124,147,255,0.7);
+  }
+  .timecode{
+    position:fixed;top:9px;right:18px;z-index:300;
+    font-size:11px;letter-spacing:0.04em;color:var(--muted);
+    font-variant-numeric:tabular-nums;
+    display:none;
+  }
+  @media(min-width:640px){ .timecode{display:block;} }
+
+  /* ---------- Nav ---------- */
+  header{
+    position:sticky;top:3px;z-index:200;
+    background:rgba(7,8,11,0.7);
+    backdrop-filter:blur(14px) saturate(1.4);
+    border-bottom:1px solid var(--line);
+  }
+  nav{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:16px 32px;max-width:1180px;margin:0 auto;
+  }
+  .logo{font-family:'Bebas Neue';font-size:22px;letter-spacing:0.03em;display:flex;align-items:center;gap:8px;}
+  .logo .tally{width:7px;height:7px;border-radius:50%;background:var(--tally);box-shadow:0 0 8px 1px rgba(255,75,54,0.7);}
+  .logo b{color:var(--blue-glow);font-weight:400;}
+
+  .nav-links{display:flex;gap:34px;align-items:center;font-size:14.5px;}
+  .nav-links a:not(.nav-cta){opacity:0.68;transition:opacity .2s;position:relative;}
+  .nav-links a:not(.nav-cta):hover{opacity:1;}
+  .nav-cta{
+    display:inline-flex;align-items:center;gap:8px;
+    background:var(--text);color:var(--ink);
+    padding:10px 18px 10px 14px;border-radius:100px;
+    font-size:13.5px;font-weight:600;
+    transition:background .2s, color .2s, box-shadow .2s;
+  }
+  .nav-cta svg{width:10px;height:10px;}
+  .nav-cta:hover{background:var(--blue);color:#fff;box-shadow:0 0 24px rgba(60,91,255,0.5);}
+
+  .burger{display:none;width:34px;height:34px;position:relative;cursor:pointer;border:none;background:none;}
+  .burger span{
+    position:absolute;left:6px;right:6px;height:2px;background:var(--text);
+    transition:transform .3s ease, opacity .3s ease;
+  }
+  .burger span:nth-child(1){top:12px;}
+  .burger span:nth-child(2){top:20px;}
+  .burger.open span:nth-child(1){transform:translateY(8px) rotate(45deg);}
+  .burger.open span:nth-child(2){transform:translateY(0px) rotate(-45deg);}
+
+  .mobile-menu{
+    position:fixed;inset:0;background:var(--ink-2);z-index:190;
+    display:flex;flex-direction:column;justify-content:center;gap:28px;padding:32px;
+    transform:translateY(-100%);transition:transform .45s cubic-bezier(.77,0,.18,1);
+  }
+  .mobile-menu.open{transform:translateY(0);}
+  .mobile-menu a{font-family:'Bebas Neue';font-size:38px;}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    position:relative;min-height:92vh;display:flex;align-items:center;
+    padding:80px 0 40px;
+  }
+  .hero::before{
+    content:'';position:absolute;inset:0;z-index:0;
+    background:
+      radial-gradient(650px 420px at 18% 22%, rgba(60,91,255,0.32), transparent 65%),
+      radial-gradient(500px 400px at 85% 75%, rgba(124,147,255,0.16), transparent 60%);
+  }
+  .hero-inner{position:relative;z-index:1;max-width:820px;}
+  .kicker{
+    display:inline-flex;align-items:center;gap:9px;
+    font-size:13px;color:var(--muted);margin-bottom:26px;
+    border:1px solid var(--line);padding:7px 14px 7px 10px;border-radius:100px;
+  }
+  .kicker .tally{width:7px;height:7px;border-radius:50%;background:var(--tally);animation:blink 1.8s infinite;}
+  @keyframes blink{0%,100%{opacity:1;}50%{opacity:0.2;}}
+
+  .hero h1{font-size:clamp(46px,7.4vw,92px);margin-bottom:26px;}
+  .hero h1 em{font-style:normal;color:var(--blue-glow);}
+  .hero p{font-size:clamp(16px,1.6vw,19px);color:var(--muted);max-width:46ch;margin-bottom:38px;}
+
+  .cta-row{display:flex;align-items:center;gap:22px;flex-wrap:wrap;}
+  .btn-primary{
+    display:inline-flex;align-items:center;gap:10px;
+    background:var(--blue);color:#fff;
+    padding:16px 26px 16px 22px;border-radius:100px;
+    font-size:15px;font-weight:600;
+    transition:transform .25s ease, box-shadow .25s ease, background .25s ease;
+    box-shadow:0 0 0 rgba(60,91,255,0);
+  }
+  .btn-primary svg{width:11px;height:11px;fill:#fff;}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 34px rgba(60,91,255,0.45);}
+  .btn-ghost{
+    font-size:14px;color:var(--muted);border-bottom:1px solid var(--line);padding-bottom:2px;
+    transition:color .2s, border-color .2s;
+  }
+  .btn-ghost:hover{color:var(--text);border-color:var(--text);}
+
+  /* window-chrome strip */
+  .chrome-bar{
+    margin-top:64px;position:relative;z-index:1;
+    border:1px solid var(--line);border-radius:12px;
+    background:var(--glass);backdrop-filter:blur(8px);
+    padding:11px 16px;display:flex;align-items:center;justify-content:space-between;
+    max-width:640px;
+  }
+  .chrome-dots{display:flex;gap:6px;}
+  .chrome-dots span{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.18);}
+  .chrome-file{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums;}
+  .chrome-status{font-size:12px;color:var(--blue-glow);display:flex;align-items:center;gap:6px;}
+  .chrome-status .tally{width:6px;height:6px;border-radius:50%;background:#4ADE80;}
+
+  /* ---------- Section basics ---------- */
+  section{padding:130px 0;position:relative;}
+  .section-head{margin-bottom:56px;max-width:640px;}
+  .section-head h2{font-size:clamp(34px,4.4vw,54px);margin-bottom:14px;}
+  .section-head p{color:var(--muted);font-size:16px;max-width:48ch;}
+
+  /* ---------- Bento services ---------- */
+  .bento{display:grid;grid-template-columns:1.3fr 1fr;gap:20px;}
+  .bento-side{display:flex;flex-direction:column;gap:20px;}
+  .card{
+    position:relative;border:1px solid var(--glass-brd);background:var(--glass);
+    border-radius:16px;overflow:hidden;padding:28px;
+    transition:border-color .3s ease, transform .3s ease;
+  }
+  .card:hover{border-color:rgba(124,147,255,0.5);}
+  .card-feature{
+    grid-row:span 1;min-height:460px;display:flex;flex-direction:column;justify-content:flex-end;
+    padding:34px;
+  }
+  .card-feature img{
+    position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;
+    filter:brightness(0.55) saturate(0.9);
+    transition:transform .6s ease, filter .6s ease;
+  }
+  .card-feature:hover img{transform:scale(1.06);filter:brightness(0.4) saturate(1);}
+  .card-feature::after{
+    content:'';position:absolute;inset:0;z-index:0;
+    background:linear-gradient(0deg, rgba(7,8,11,0.9), transparent 65%);
+  }
+  .card-feature .card-body{position:relative;z-index:1;}
+  .card-name{font-family:'Bebas Neue';font-size:32px;margin-bottom:10px;}
+  .card-desc{font-size:14.5px;color:var(--muted);max-width:44ch;}
+  .card-small{min-height:135px;justify-content:center;}
+  .card-small .card-name{font-size:24px;}
+  .card-small .card-desc{font-size:13.5px;}
+
+  @media(max-width:860px){
+    .bento{grid-template-columns:1fr;}
+    .card-feature{min-height:340px;}
+  }
+
+  /* ---------- Process timeline ---------- */
+  .timeline{position:relative;padding-left:36px;}
+  .timeline::before{
+    content:'';position:absolute;left:5px;top:6px;bottom:6px;width:1px;
+    background:linear-gradient(var(--blue), transparent 95%);
+  }
+  .step{position:relative;padding-bottom:44px;}
+  .step:last-child{padding-bottom:0;}
+  .step::before{
+    content:'';position:absolute;left:-36px;top:4px;width:11px;height:11px;border-radius:50%;
+    background:var(--ink);border:2px solid var(--blue);
+  }
+  .step-num{font-size:12.5px;color:var(--blue-glow);font-variant-numeric:tabular-nums;margin-bottom:6px;letter-spacing:0.03em;}
+  .step-title{font-size:19px;font-weight:600;margin-bottom:6px;}
+  .step-desc{font-size:15px;color:var(--muted);max-width:52ch;}
+
+  /* ---------- Portfolio reel ---------- */
+  .reel{
+    display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;
+    padding-bottom:14px;margin:0 -32px;padding-left:32px;padding-right:32px;
+    -webkit-overflow-scrolling:touch;
+  }
+  .reel::-webkit-scrollbar{height:5px;}
+  .reel::-webkit-scrollbar-thumb{background:var(--line);border-radius:10px;}
+  .frame{
+    position:relative;flex:0 0 auto;width:min(78vw,430px);aspect-ratio:4/5;
+    border-radius:14px;overflow:hidden;scroll-snap-align:start;
+    border:1px solid var(--glass-brd);
+  }
+  .frame img{width:100%;height:100%;object-fit:cover;filter:saturate(0.9);}
+  .frame .tc{
+    position:absolute;left:14px;bottom:14px;font-size:12px;
+    font-variant-numeric:tabular-nums;color:#fff;
+    background:rgba(0,0,0,0.5);padding:5px 10px;border-radius:100px;
+    backdrop-filter:blur(4px);
+  }
+
+  /* ---------- Contact ---------- */
+  .contact-card{
+    border:1px solid var(--glass-brd);background:var(--glass);border-radius:20px;
+    padding:12px 8px;position:relative;overflow:hidden;
+  }
+  .contact-card::before{
+    content:'';position:absolute;inset:0;z-index:0;
+    background:radial-gradient(500px 300px at 90% -10%, rgba(60,91,255,0.25), transparent 60%);
+  }
+  .contact-row{
+    position:relative;z-index:1;
+    display:flex;align-items:center;gap:18px;
+    padding:22px 24px;border-radius:14px;
+    transition:background .25s ease, padding-left .25s ease;
+  }
+  .contact-row:hover{background:rgba(255,255,255,0.05);padding-left:30px;}
+  .contact-row + .contact-row{border-top:1px solid var(--line);}
+  .contact-icon{
+    width:44px;height:44px;border-radius:50%;background:rgba(60,91,255,0.15);
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+  .contact-icon svg{width:18px;height:18px;stroke:var(--blue-glow);}
+  .contact-text{display:flex;flex-direction:column;gap:2px;}
+  .contact-label{font-size:12.5px;color:var(--muted);}
+  .contact-value{font-family:'Bebas Neue';font-size:clamp(20px,3vw,30px);letter-spacing:0.01em;}
+
+  footer{
+    padding:34px 0;color:var(--muted);font-size:13px;
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+    border-top:1px solid var(--line);
+  }
+
+  @media(max-width:860px){
+    .nav-links{display:none;}
+    .burger{display:block;}
+    section{padding:88px 0;}
+    .wrap{padding:0 22px;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+  }
+</style>
+</head>
+<body>
+
+  <div class="scrubber"><div class="scrubber-fill" id="scrubFill"></div></div>
+  <div class="timecode" id="timecode">00:00 / 04:12</div>
+
+  <header>
+    <nav class="wrap">
+      <div class="logo"><span class="tally"></span>SHADOW <b>EDITS</b></div>
+      <div class="nav-links">
+        <a href="#work">Work</a>
+        <a href="#services">Services</a>
+        <a href="#process">Process</a>
+        <a href="#contact" class="nav-cta">
+          <svg viewBox="0 0 10 10"><polygon points="0,0 10,5 0,10" fill="currentColor"/></svg>
+          Start an order
+        </a>
+      </div>
+      <button class="burger" id="burger" aria-label="Menu"><span></span><span></span></button>
+    </nav>
+  </header>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#work">Work</a>
+    <a href="#services">Services</a>
+    <a href="#process">Process</a>
+    <a href="#contact">Contact</a>
+  </div>
+
+  <section class="hero">
+    <div class="wrap hero-inner">
+      <div class="kicker"><span class="tally"></span> Now taking orders</div>
+      <h1>Send the footage.<br>Get the <em>story</em>.</h1>
+      <p>Freelance video editing for reels, YouTube, podcasts and brand promos — cut fast, cut sharp, cut to match your voice.</p>
+      <div class="cta-row">
+        <a href="#contact" class="btn-primary">
+          <svg viewBox="0 0 10 10"><polygon points="0,0 10,5 0,10" fill="currentColor"/></svg>
+          Start an order
+        </a>
+        <a href="#work" class="btn-ghost">See recent work</a>
+      </div>
+
+      <div class="chrome-bar">
+        <div class="chrome-dots"><span></span><span></span><span></span></div>
+        <div class="chrome-file">shadow_edits_reel.prproj</div>
+        <div class="chrome-status"><span class="tally"></span>Autosaved</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="services">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>What I cut</h2>
+        <p>Four kinds of edits, same attention to pacing and sound either way.</p>
+      </div>
+
+      <div class="bento">
+        <div class="card card-feature">
+          <img src="https://images.unsplash.com/photo-1515634928627-2a4e0dae3ddf?w=1000&auto=format&fit=crop&q=80" alt="">
+          <div class="card-body">
+            <div class="card-name">Reels &amp; Shorts</div>
+            <div class="card-desc">Vertical cuts built for the scroll: fast hooks, punchy captions, sound that hits on beat.</div>
+          </div>
+        </div>
+        <div class="bento-side">
+          <div class="card card-small">
+            <div class="card-name">YouTube &amp; Long-form</div>
+            <div class="card-desc">Full narrative edits with pacing, colour and sound design that keep people watching.</div>
+          </div>
+          <div class="card card-small">
+            <div class="card-name">Podcast Highlights</div>
+            <div class="card-desc">Multicam sync, clip carving and captions so the best moments travel on their own.</div>
+          </div>
+          <div class="card card-small">
+            <div class="card-name">Brand &amp; Promo</div>
+            <div class="card-desc">Product videos and motion titles that look like they cost more than they did.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="process">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>How it works</h2>
+        <p>Five steps, start to delivery.</p>
+      </div>
+      <div class="timeline">
+        <div class="step"><div class="step-num">STEP 1</div><div class="step-title">Send your raw footage</div><div class="step-desc">Drive link, WeTransfer, whatever's easiest on your end.</div></div>
+        <div class="step"><div class="step-num">STEP 2</div><div class="step-title">Share the reference</div><div class="step-desc">A voice note, a link, three words — enough to catch the vibe.</div></div>
+        <div class="step"><div class="step-num">STEP 3</div><div class="step-title">First cut lands</div><div class="step-desc">You'll see a draft before you've forgotten you sent the files.</div></div>
+        <div class="step"><div class="step-num">STEP 4</div><div class="step-title">Revise until it's right</div><div class="step-desc">Notes in, changes out — no scope-creep lecture.</div></div>
+        <div class="step"><div class="step-num">STEP 5</div><div class="step-title">Delivered, every format</div><div class="step-desc">Vertical, horizontal, whatever the platform wants.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="work">
+    <div class="wrap" style="max-width:none;">
+      <div class="wrap" style="padding:0;max-width:1180px;margin:0 auto;">
+        <div class="section-head">
+          <h2>Recent frames</h2>
+          <p>Scrub through a few stills from cuts in progress.</p>
+        </div>
+      </div>
+      <div class="reel">
+        <div class="frame"><img src="https://images.unsplash.com/photo-1502209877429-d7c6df9eb3f9?w=800&auto=format&fit=crop&q=80" alt="Editing setup"><span class="tc">00:00:04:12</span></div>
+        <div class="frame"><img src="https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=800&auto=format&fit=crop&q=80" alt="Editing timeline monitor"><span class="tc">00:01:12:08</span></div>
+        <div class="frame"><img src="https://images.unsplash.com/photo-1551302175-952301267d19?w=800&auto=format&fit=crop&q=80" alt="Editing software on screen"><span class="tc">00:02:03:19</span></div>
+        <div class="frame"><img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?w=800&auto=format&fit=crop&q=80" alt="Clapperboard"><span class="tc">00:03:41:02</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Let's cut something</h2>
+        <p>Reach out however's easiest — usually replies within a day.</p>
+      </div>
+
+      <div class="contact-card">
+        <a class="contact-row" href="tel:8921356116">
+          <div class="contact-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+          <div class="contact-text"><span class="contact-label">Call / WhatsApp</span><span class="contact-value">89213 56116</span></div>
+        </a>
+        <a class="contact-row" href="mailto:abel62827@gmail.com">
+          <div class="contact-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="m22 6-10 7L2 6"/></svg></div>
+          <div class="contact-text"><span class="contact-label">Email</span><span class="contact-value">abel62827@gmail.com</span></div>
+        </a>
+        <a class="contact-row" href="https://instagram.com/_shadow_opp" target="_blank" rel="noopener">
+          <div class="contact-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><path d="M17.5 6.5h.01"/></svg></div>
+          <div class="contact-text"><span class="contact-label">Instagram</span><span class="contact-value">@_shadow_opp</span></div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap" style="display:flex;justify-content:space-between;width:100%;flex-wrap:wrap;gap:8px;">
+      <span>Shadow Edits — video editing on order</span>
+      <span id="year"></span>
+    </div>
+  </footer>
+
+<script>
+  // scroll scrubber
+  const fill = document.getElementById('scrubFill');
+  const tc = document.getElementById('timecode');
+  const totalSeconds = 4*60+12;
+  function fmt(s){const m=Math.floor(s/60);const ss=Math.floor(s%60);return String(m).padStart(2,'0')+':'+String(ss).padStart(2,'0');}
+  function onScroll(){
+    const h = document.documentElement;
+    const pct = h.scrollTop / (h.scrollHeight - h.clientHeight);
+    const p = Math.min(Math.max(pct,0),1);
+    fill.style.width = (p*100)+'%';
+    tc.textContent = fmt(p*totalSeconds)+' / '+fmt(totalSeconds);
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // mobile menu
+  const burger = document.getElementById('burger');
+  const menu = document.getElementById('mobileMenu');
+  burger.addEventListener('click', () => {
+    burger.classList.toggle('open');
+    menu.classList.toggle('open');
+  });
+  menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    burger.classList.remove('open'); menu.classList.remove('open');
+  }));
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
