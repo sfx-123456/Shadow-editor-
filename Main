@@ -1,0 +1,6 @@
+git init
+git remote add origin https://github.com/sfx-123456/Shadow-editor-.git
+git add .
+git commit -m "Shadow Edits site"
+git branch -M main
+git push -u origin main
